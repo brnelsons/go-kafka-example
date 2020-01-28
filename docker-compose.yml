@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  kafka-consumer:
+    image: go-kafka-consumer:0.1.0
+    environment:
+      - KAFKA_BROKER_URLS=localhost:9042
+      - KAFKA_TOPIC=testing-topic
+      - KAFKA_GROUP_ID=group-id
