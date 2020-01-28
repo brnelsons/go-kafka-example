@@ -15,16 +15,18 @@ type Consumer struct {
 // Creates a new consumer connected to kafka, ready to start consuming messages.
 func NewConsumer(kafkaBrokerUrls []string, topic string, groupId string) *Consumer {
 	// https://godoc.org/github.com/segmentio/kafka-go#Reader
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:        kafkaBrokerUrls,
-		Topic:          topic,
-		GroupID:        groupId,
-		Partition:      0,
-		MinBytes:       10e3, // 10KB
-		MaxBytes:       10e6, // 10MB
-		CommitInterval: time.Second,
-		MaxWait:        time.Second * 10,
-	})
+	r := kafka.NewReader(
+		kafka.ReaderConfig{
+			Brokers:        kafkaBrokerUrls,
+			Topic:          topic,
+			GroupID:        groupId,
+			Partition:      0,
+			MinBytes:       10e3, // 10KB
+			MaxBytes:       10e6, // 10MB
+			CommitInterval: time.Second,
+			MaxWait:        time.Second * 10,
+		},
+	)
 	return &Consumer{reader: r}
 }
 

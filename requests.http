@@ -1,0 +1,13 @@
+###
+GET http://localhost:8099/api/v1/consume
+Accept: application/json
+
+###
+POST http://localhost:8099/api/v1/produce
+Content-Type: application/json
+
+{
+  "value": "testing"
+}
+
+###

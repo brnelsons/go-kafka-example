@@ -13,22 +13,36 @@ import (
 )
 
 func main() {
-	kafkaBrokerUrls := os.Getenv("KAFKA_BROKER_URLS")
+	kafkaBrokerUrls := strings.Split(os.Getenv("KAFKA_BROKER_URLS"), ",")
 	kafkaTopic := os.Getenv("KAFKA_TOPIC")
 	kafkaGroupId := os.Getenv("KAFKA_GROUP_ID")
+	port := os.Getenv("PORT")
 
+	if len(port) == 0 {
+		port = "8080"
+	}
+
+	// setup consumer
 	consumer := kafka.NewConsumer(
-		strings.Split(kafkaBrokerUrls, ","),
+		kafkaBrokerUrls,
 		kafkaTopic,
 		kafkaGroupId,
 	)
 
-	handler := kafkaRestHandler.NewKafkaRestHandler(consumer)
+	// setup producer
+	producer := kafka.NewProducer(
+		kafkaBrokerUrls,
+		kafkaTopic,
+	)
+
+	handler := kafkaRestHandler.NewKafkaRestHandler(consumer, producer)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/api/v1/consume", handler.ConsumeHandler)
+	router.HandleFunc("/api/v1/produce", handler.ProduceHandler)
 	srv := &http.Server{
 		Handler: router,
+		Addr:    ":" + port,
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
