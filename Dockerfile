@@ -3,7 +3,6 @@ FROM golang:1.13-alpine
 RUN apk update
 WORKDIR /go/src/KafkaConsumer/
 COPY ./src /go/src/KafkaConsumer/
-RUN ls -la /go/src/KafkaConsumer/
 RUN go build -o kafkaConsumer.bin
 
 # Image with binary

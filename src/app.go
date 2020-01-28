@@ -38,8 +38,10 @@ func main() {
 	handler := kafkaRestHandler.NewKafkaRestHandler(consumer, producer)
 
 	router := mux.NewRouter()
-	router.HandleFunc("/api/v1/consume", handler.ConsumeHandler)
-	router.HandleFunc("/api/v1/produce", handler.ProduceHandler)
+	router.HandleFunc("/api/v1/consume", handler.ConsumeHandler).
+		Methods(http.MethodGet)
+	router.HandleFunc("/api/v1/produce", handler.ProduceHandler).
+		Methods(http.MethodPost)
 	srv := &http.Server{
 		Handler: router,
 		Addr:    ":" + port,

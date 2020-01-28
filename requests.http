@@ -1,13 +1,13 @@
-###
-GET http://localhost:8099/api/v1/consume
-Accept: application/json
-
-###
+### Pushes the JSON onto the topic as a message
 POST http://localhost:8099/api/v1/produce
 Content-Type: application/json
 
 {
   "value": "testing"
 }
+
+### Retrieves a single message from the topic,
+GET http://localhost:8099/api/v1/consume
+Accept: application/json
 
 ###
